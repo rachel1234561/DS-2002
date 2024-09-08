@@ -1,0 +1,83 @@
+/*Part 1:*/
+/*World*/
+SELECT name FROM country WHERE continent = "South America"; 
+
+SELECT name, population FROM country WHERE name = "Germany";
+
+SELECT name FROM city WHERE countrycode = "JPN";
+
+SELECT name, population FROM country WHERE Continent = "Africa" and population > 60000000;
+
+SELECT name, lifeexpectancy FROM country WHERE population > 1000000 and population < 5000000;
+
+SELECT name from country JOIN countrylanguage on country.code = countrylanguage.CountryCode WHERE countrylanguage.Language= "french" and countrylanguage.IsOfficial = "T";
+
+/*Chinook*/
+
+SELECT Title FROM Album JOIN Artist ON Artist.ArtistId = Album.ArtistId WHERE Name = "AC/DC";
+
+SELECT firstname,lastname,email FROM Customer where Country = "brazil";
+
+SELECT * FROM Playlist;
+
+SELECT COUNT(*) FROM Track JOIN Genre ON Track.GenreId = Genre.GenreId WHERE Genre.Name = 'Rock';
+
+SELECT FirstName, LastName FROM Employee WHERE ReportsTo = (SELECT EmployeeId FROM Employee WHERE FirstName = 'Nancy' AND LastName ='Edwards');
+
+SELECT Customer.FirstName, Customer.LastName, SUM(Invoice.Total) AS TotalSales FROM Invoice JOIN Customer ON Invoice.CustomerId = Customer.CustomerId GROUP BY Customer.CustomerId;
+
+/*Part 2:*/
+
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
+    title VARCHAR(50),
+    hire_date DATE
+);
+
+INSERT INTO employees (first_name, last_name, title, hire_date) VALUES ('Jack', 'Smith', 'Sweater Designer', '2023-09-15');
+INSERT INTO employees (first_name, last_name, title, hire_date) VALUES ('Jane', 'Li', 'Marketing Director', '2023-02-10');
+INSERT INTO employees (first_name, last_name, title, hire_date) VALUES ('Allie', 'Garcia', 'Marketing Analytics', '2024-02-16');
+INSERT INTO employees (first_name, last_name, title, hire_date) VALUES ('Karen', 'Taylor', 'Design Intern', '2024-06-20');
+INSERT INTO employees (first_name, last_name, title, hire_date) VALUES ('Joanne', 'Robinson', 'Accountant', '2022-06-22');
+
+
+CREATE TABLE item_type (
+    item_id INT PRIMARY KEY,
+    item_name VARCHAR(30) NOT NULL
+);
+
+INSERT INTO item_type (item_id, item_name) VALUES (1,'Sweater');
+INSERT INTO item_type (item_id, item_name) VALUES (2,'Cardigan');
+INSERT INTO item_type (item_id, item_name) VALUES (3,'Bag');
+INSERT INTO item_type (item_id, item_name) VALUES (4,'Tapestry');
+INSERT INTO item_type (item_id, item_name) VALUES (5,'Hat');
+
+
+CREATE TABLE customer_info (
+    customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
+    purchase_amount INT,
+    purchase_date DATE,
+    item_id INT
+);
+
+INSERT INTO customer_info (first_name, last_name, purchase_amount, purchase_date, item_id ) VALUES ('Bob', 'Gru', 50, '2024-06-10', 1);
+INSERT INTO customer_info (first_name, last_name, purchase_amount, purchase_date, item_id) VALUES ('Audrey', 'Rivers', 30, '2024-07-23',4);
+INSERT INTO customer_info (first_name, last_name, purchase_amount, purchase_date, item_id) VALUES ('Olivia', 'Miles', 75, '2024-07-29',1);
+INSERT INTO customer_info (first_name, last_name, purchase_amount, purchase_date, item_id) VALUES ('Sophia', 'Heartman', 20, '2024-08-11',5);
+INSERT INTO customer_info (first_name, last_name, purchase_amount, purchase_date, item_id) VALUES ('Jane', 'Nguyen', 25, '2024-08-11',4);
+
+
+/*Find the names of all the people who bought Sweaters*/
+SELECT first_name,last_name FROM customer_info
+JOIN item_type on customer_info.item_id = item_type.item_id
+WHERE item_name = "Sweater";
+
+/*Find total sales*/
+SELECT SUM(purchase_amount) FROM customer_info;
+
+/*List the names and titles of employees hired in 2024*/
+SELECT first_name, last_name, title FROM employees WHERE hire_date > '2024-01-01';
